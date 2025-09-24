@@ -35,7 +35,11 @@ export const useReferralStore = create<ReferralState>()(
 
       generateReferralLink: () => {
         const code = get().referralCode
-        return `${window.location.origin}/auth/register?ref=${code}`
+        if (typeof window !== 'undefined') {
+          return `${window.location.origin}/auth/register?ref=${code}`
+        }
+        // Fallback for static generation
+        return `https://betarena.demo.io/auth/register?ref=${code}`
       },
 
       copyReferralLink: async () => {
