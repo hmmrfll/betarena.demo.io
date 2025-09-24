@@ -35,10 +35,16 @@ export const useReferralStore = create<ReferralState>()(
 
       generateReferralLink: () => {
         const code = get().referralCode
-        return `${window.location.origin}/auth/register?ref=${code}`
+        if (typeof window !== 'undefined') {
+          return `${window.location.origin}/auth/register?ref=${code}`
+        }
+        return `/auth/register?ref=${code}`
       },
 
       copyReferralLink: async () => {
+        if (typeof window === 'undefined' || !navigator.clipboard) {
+          return false
+        }
         try {
           const link = get().generateReferralLink()
           await navigator.clipboard.writeText(link)

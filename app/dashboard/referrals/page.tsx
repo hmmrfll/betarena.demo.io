@@ -52,7 +52,7 @@ export default function ReferralsPage() {
   }
 
   const handleShare = async () => {
-    if (navigator.share) {
+    if (typeof window !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
           title: "Join BetArena",
@@ -296,7 +296,11 @@ export default function ReferralsPage() {
                       {searchTerm ? "No referrals match your search" : "Start inviting friends to see them here"}
                     </p>
                     {!searchTerm && (
-                      <Button onClick={() => document.querySelector('[value="invite"]')?.click()}>
+                      <Button onClick={() => {
+                        if (typeof window !== 'undefined') {
+                          document.querySelector('[value="invite"]')?.click()
+                        }
+                      }}>
                         Invite Friends
                       </Button>
                     )}
